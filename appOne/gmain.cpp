@@ -1,3 +1,47 @@
+/*#include"libOne.h"
+void gmain() {
+	window(1920, 1080, full);
+	//ƒf[ƒ^
+	struct COLOR green = { 0, 255, 0 };
+	struct COLOR yellow = { 255, 255, 0 };
+	struct COLOR red = { 255, 0, 0 };
+	struct COLOR color = green;
+
+	int hpMax = 500;
+	int hp = hpMax;
+	int hpWarning = hpMax * 0.3f;
+	int hpDanger = hpMax * 0.1f;
+	float px = 700;
+	float py = 200;
+	float h = 60;
+
+	while (notQuit) {
+		if (isTrigger(KEY_SPACE)) { hp = hpMax; }
+		if (hp > 0) { hp -= 2; }
+
+		if (hp > hpWarning) {
+			color = green;
+		}
+		else if (hp > hpDanger) {
+			color = yellow;
+		}
+		else {
+			color = red;
+		}
+		clear(74, 84, 89);
+		fill(128);
+		rect(px, py, hpMax, h);
+		fill(color);
+		rect(px, py, hp, h);
+		if (hp <= 0) {
+			textSize(100);
+			fill(255, 0, 0);
+			text("Game Over", 700, 400);
+		}
+	}
+}
+*/
+
 /*
 #include"libOne.h"
 void gmain() {
