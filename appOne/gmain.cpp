@@ -1,10 +1,49 @@
-#define _SHOOT
+#define _
+
+#ifdef _SORT
+#include"libOne.h"
+void gmain() {
+	window(1100, 1000);
+	const int num = 20;
+	int score[num];
+	int r, c;
+	for (int i = 0; i < num; i++) {
+		score[i] = random() % 1001;
+	}
+	while (notQuit) {
+		clear(60);
+
+		if (isTrigger(KEY_A)) {
+			for (int i = 0; i < num; i++) {
+				score[i] = random() % 1001;
+			}
+		}
+
+		if (isTrigger(KEY_D)) {
+			for (r = 0; r < num - 1; r++) {
+				for (c = r + 1; c < num; c++) {
+					if (score[r] < score[c]) {
+						int w = score[r];
+						score[r] = score[c];
+						score[c] = w;
+					}
+				}
+			}
+		}
+			for (int i = 0; i < num; i++) {
+				print(score[i]);
+				rect(100, 50 * i, score[i], 40);
+			}
+	}
+}
+#endif
+
 #ifdef _SHOOT
 #include"libOne.h"
 void gmain() {
 	window(1920, 1080, full);
 	struct PLAYER {
-		float px, py, w, h, vx;
+		float px, py, w, h, vx, ofsY;
 	};
 	struct BULLET {
 		float px, py, w, h, vy;
@@ -16,12 +55,16 @@ void gmain() {
 	p.w = 100;
 	p.h = 200;
 	p.vx = 10;
-	struct BULLET b;
-	b.px = p.px;
-	b.py = p.py;
-	b.w = 20;
-	b.h = 40;
-	b.vy = -10;
+	p.ofsY = -110;
+	const int numBullets = 10;
+	struct BULLET b[numBullets];
+	for (int i = 0; i < numBullets; i++) {
+		b[i].px = p.px;
+		b[i].py = p.py;
+		b[i].w = 20;
+		b[i].h = 40;
+		b[i].vy = -10;
+	}
 	while (notQuit) {
 		if (isPress(KEY_A)) {
 			p.px += -p.vx; 
@@ -30,18 +73,32 @@ void gmain() {
 			p.px += p.vx; 
 		}
 		if (isTrigger(KEY_SPACE)) {
-			b.hp = 1; 
-			b.px = p.px;
-			b.py = p.py;
+			for (int i = 0; i < numBullets; i++) {
+				if (b[i].hp == 0) {
+					b[i].hp = 1;
+					b[i].px = p.px;
+					b[i].py = p.py + p.ofsY;
+					i = numBullets;
+				}
+			}
 		}
-		if (b.hp > 0) {
-			b.py += b.vy;
+		for (int i = 0; i < numBullets; i++) {
+
+			if (b[i].hp > 0) {
+				b[i].py += b[i].vy;
+				//ウィンドウの外に出た
+				if (b[i].py < -b[i].h) {
+					b[i].hp = 0;
+				}
+			}
 		}
 		clear();
 		rectMode(CENTER);
 		rect(p.px, p.py, p.w, p.h);
-		if (b.hp > 0) {
-			rect(b.px, b.py, b.w, b.h); 
+		for (int i = 0; i < numBullets; i++) {
+			if (b[i].hp > 0) {
+				rect(b[i].px, b[i].py, b[i].w, b[i].h);
+			}
 		}
 	}
 }
