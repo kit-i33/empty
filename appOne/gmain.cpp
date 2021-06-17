@@ -1,5 +1,6 @@
 #define _
-#ifdef _
+
+#ifdef _HSV
 #include"libOne.h"
 void gmain() {
 	window(1920, 1080, full);
@@ -68,6 +69,8 @@ void gmain() {
 		}
 			for (int i = 0; i < num; i++) {
 				print(score[i]);
+				stroke(255,0,200);
+				strokeWeight(7);
 				rect(100, 50 * i, score[i], 40);
 			}
 	}
